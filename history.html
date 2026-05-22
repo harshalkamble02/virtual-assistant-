@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search History - Virtual Assistant</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+        .history-item {
+            background: white;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .timestamp {
+            color: #666;
+            font-size: 0.9em;
+        }
+        .query {
+            color: #333;
+            font-weight: bold;
+        }
+        .clear-btn {
+            background: #ff4444;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-bottom: 20px;
+        }
+        .clear-btn:hover {
+            background: #ff0000;
+        }
+    </style>
+</head>
+<body>
+    <h1>Search History</h1>
+    <button class="clear-btn" id="clearHistory">Clear History</button>
+    <div id="historyContainer"></div>
+
+    <script>
+        const historyContainer = document.getElementById('historyContainer');
+        const clearBtn = document.getElementById('clearHistory');
+
+        function loadHistory() {
+            const searchHistory = JSON.parse(localStorage.getItem('searchHistory')) || [];
+            historyContainer.innerHTML = searchHistory.reverse().map(entry => `
+                <div class="history-item">
+                    <div class="query">${entry.query}</div>
+                    <div class="timestamp">${entry.timestamp}</div>
+                </div>
+            `).join('');
+        }
+
+        clearBtn.addEventListener('click', () => {
+            if(confirm('Are you sure you want to clear all history?')) {
+                localStorage.removeItem('searchHistory');
+                loadHistory();
+            }
+        });
+
+        loadHistory();
+    </script>
+</body>
+</html> 
